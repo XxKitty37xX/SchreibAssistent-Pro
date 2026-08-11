@@ -76,6 +76,14 @@ class MainWindow(QMainWindow):
         self.paste_action.setShortcut("Ctrl+V")
         self.paste_action.triggered.connect(self.editor.paste)
 
+        self.undo_action = QAction("Rückgängig", self)
+        self.undo_action.setShortcut("Ctrl+Z")
+        self.undo_action.triggered.connect(self.editor.undo)
+
+        self.redo_action = QAction("Wiederholen", self)
+        self.redo_action.setShortcut("Ctrl+Y")
+        self.redo_action.triggered.connect(self.editor.redo)
+
     def _create_menu(self):
         menu = self.menuBar()
         file_menu = menu.addMenu("Datei")
@@ -88,16 +96,12 @@ class MainWindow(QMainWindow):
         file_menu.addAction(self.exit_action)
 
         edit_menu = menu.addMenu("Bearbeiten")
+        edit_menu.addAction(self.undo_action)
+        edit_menu.addAction(self.redo_action)
+        edit_menu.addSeparator()
         edit_menu.addAction(self.cut_action)
         edit_menu.addAction(self.copy_action)
         edit_menu.addAction(self.paste_action)
-        edit_menu.addSeparator()
-        undo = self.editor.undoAction()
-        undo.setText("Rückgängig")
-        redo = self.editor.redoAction()
-        redo.setText("Wiederholen")
-        edit_menu.addAction(undo)
-        edit_menu.addAction(redo)
 
         help_menu = menu.addMenu("Hilfe")
         about = QAction("Über SchreibAssistent Pro", self)
@@ -111,6 +115,9 @@ class MainWindow(QMainWindow):
         toolbar.addAction(self.new_action)
         toolbar.addAction(self.open_action)
         toolbar.addAction(self.save_action)
+        toolbar.addSeparator()
+        toolbar.addAction(self.undo_action)
+        toolbar.addAction(self.redo_action)
         toolbar.addSeparator()
         toolbar.addAction(self.cut_action)
         toolbar.addAction(self.copy_action)
